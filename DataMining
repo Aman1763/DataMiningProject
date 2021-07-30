@@ -1,0 +1,40 @@
+#Data Mining Research Project
+
+#Name: Aman Modi
+
+#Loading libraries
+
+library(readr)
+library(dplyr)
+library(ggplot2)
+
+mydata <- read.csv("Data Mining Project/Results.csv")
+
+sites_data <- read.csv("Data Mining Project/Sites.csv")
+
+joined_data <- mydata %>%
+	left_join(sites_data)
+
+#View(joined_data)
+
+california_data <- joined_data %>%
+	filter(STATE_NM == "California") %>%
+		select(COUNTY_NM, RESULT_VA, PARM_NM, LAT_VA, LONG_VA, DEC_LAT_VA, DEC_LONG_VA)
+
+
+#View(california_data)
+
+georgia_data <- joined_data %>%
+	filter(STATE_NM == "Georgia") %>%
+		select(COUNTY_NM, RESULT_VA, PARM_NM, LAT_VA, LONG_VA, DEC_LAT_VA, DEC_LONG_VA)
+
+#View(georgia_data)
+
+histogram <- ggplot(data = mydata, aes(x = RESULT_VA)) + geom_histogram(color = "black", fill = "blue", binwidth = 30) + theme_classic() + labs(title = "Distributions of Industrial Organics in California and Georgia conties", x = "Concentrations", y = "Frequency" ) + facet_grid(. ~ STATE_NM)
+
+histogram
+
+boxplot <- ggplot(data = mydata, aes(x = STATE_NM, y = RESULT_VA, fill = STATE_NM)) + geom_boxplot() + labs(title = "Distributions of Industrial Organics in California and Georgia counties", x = "States",  y = "Concentrations of Industrial Organics")
+
+boxplot
+
